@@ -15,9 +15,10 @@ import {
 export default function OrderStatusPage({ navigation, route }) {
   const { data, URL } = route.params;
   const [name, setName] = useState(route.params.data.name);
+  const [canteenData,setCanteenData]=useState("");
   const [orders, setOrders] = useState();
   function MoreOptions() {
-    navigation.navigate("MoreOptions", { data: data, URL: URL });
+    navigation.navigate("MoreOptions", { data: data, URL: URL,canteenData:canteenData });
   }
   const getorders = async () => {
     const check = await fetch(URL + "/getorders", {
@@ -40,17 +41,32 @@ export default function OrderStatusPage({ navigation, route }) {
       body: JSON.stringify({ id, value }),
     });
     const result = await check.json();
-    console.log(result);
+  };
+  const getCanteenData = async () => {
+    const check = await fetch(
+      URL+"/CanteenData",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name}),
+      }
+    );
+    const result = await check.json();
+    setCanteenData(result.data);
   };
   useEffect(() => {
     setName(route.params.data.data[0].name);
   }, []);
   useEffect(() => {
-    getorders();
-  }, [name]);
+    console.log(canteenData);
+  }, [canteenData])
+  
   useEffect(() => {
-    console.log(orders);
-  }, [orders]);
+    getorders();
+    getCanteenData();
+  }, [name]);
   const showItems = ({ item }) => (
     <View className="mb-3 flex flex-row justify-between">
       <Text className="text-xl">{item.title}</Text>
@@ -94,8 +110,11 @@ export default function OrderStatusPage({ navigation, route }) {
     );
   return (
     <>
+    <Text className="mt-12 text-3xl self-center">
+      Orders Placed
+    </Text>
       <FlatList
-        className="mt-3"
+        className=""
         data={orders}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
@@ -105,7 +124,7 @@ export default function OrderStatusPage({ navigation, route }) {
           onPress={() => {
             MoreOptions();
           }}
-          className="mt-4 self-center text-2xl w-[100%] bg-[#EBC500] h-12 flex flex-row justify-center rounded-xl"
+          className="mt-2 self-center text-2xl w-[100%] bg-[#EBC500] h-12 flex flex-row justify-center rounded-xl"
           mode="contained"
         >
           <Text className="mt-11 text-xl text-white">More Options</Text>

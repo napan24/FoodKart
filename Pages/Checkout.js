@@ -18,7 +18,6 @@ import {
 } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Icon from "react-native-vector-icons/Ionicons";
-import RazorpayCheckout from 'react-native-razorpay';
 
 
 export default function Checkout({ route, navigation }) {
@@ -31,28 +30,30 @@ export default function Checkout({ route, navigation }) {
   const [visible, setVisible] = React.useState(false);
   const URL=route.params.URL;
   function CheckOut(){
-    var options = {
-      description: 'Credits towards consultation',
-      image: 'https://i.imgur.com/3g7nmJC.jpg',
-      currency: 'INR',
-      key: 'rzp_test_Vk9U14SoWfMZCT',
-      amount: '5000',
-      name: 'Acme Corp',
-      order_id: 'order_DslnoIgkIDL8Zt',//Replace this with an order_id created using Orders API.
-      prefill: {
-        email: 'gaurav.kumar@example.com',
-        contact: '9191919191',
-        name: 'Gaurav Kumar'
-      },
-      theme: {color: '#53a20e'}
-    }
-    RazorpayCheckout.open(options).then((data) => {
-      // handle success
-      alert(`Success: ${data.razorpay_payment_id}`);
-    }).catch((error) => {
-      // handle failure
-      alert(`Error: ${error.code} | ${error.description}`);
-    });
+    // var options = {
+    //   description: 'Credits towards consultation',
+    //   image: 'https://i.imgur.com/3g7nmJC.jpg',
+    //   currency: 'INR',
+    //   key: 'rzp_test_Vk9U14SoWfMZCT',
+    //   amount: '5000',
+    //   name: 'Acme Corp',
+    //   order_id: 'order_DslnoIgkIDL8Zt',//Replace this with an order_id created using Orders API.
+    //   prefill: {
+    //     email: 'gaurav.kumar@example.com',
+    //     contact: '9191919191',
+    //     name: 'Gaurav Kumar'
+    //   },
+    //   theme: {color: '#53a20e'}
+    // }
+    // RazorpayCheckout.open(options).then((data) => {
+    //   // handle success
+    //   alert(`Success: ${data.razorpay_payment_id}`);
+    // }).catch((error) => {
+    //   // handle failure
+    //   alert(`Error: ${error.code} | ${error.description}`);
+    // });
+
+
   }
   function addItem(item) {
     if (itemList && itemList.some((product) => product.title === item.title)) {
@@ -183,7 +184,7 @@ export default function Checkout({ route, navigation }) {
           <Text className="self-center text-xl ml-2">₹{sum}</Text>
           <Button
             onPress={() => {
-              CheckOut();
+              checkout();
             }}
             className=" self-center text-2xl text-white w-[50%] bg-green-600 h-[100%] flex flex-row justify-center rounded-none"
             mode="contained"

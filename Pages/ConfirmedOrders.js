@@ -58,7 +58,7 @@ export default function ConfirmedOrders({ navigation, route }) {
   const showItems = ({ item }) => (
     <View className="mb-3 flex flex-row justify-between">
       <Text className="text-xl">{item.title}</Text>
-      <Text className="text-xl">X {item.count}</Text>
+      <Text className="text-xl text-white">X {item.count}</Text>
     </View>
   );
   const renderItem = ({ item }) =>
@@ -72,7 +72,8 @@ export default function ConfirmedOrders({ navigation, route }) {
               renderItem={showItems}
               keyExtractor={(item) => item.id}
             />
-            <Text className="text-xl">Ordered By-{item.email.split('@')[0]}</Text>
+            <Text className="text-xl mt-2 text-white">Ordered By-{item.email.split('@')[0]}</Text>
+            <Text className="text-xl mt-2 text-white">OTP-{item.OTP}</Text>
           </Card.Content>
         </Card>
       </Surface>

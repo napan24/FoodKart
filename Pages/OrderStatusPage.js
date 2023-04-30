@@ -110,6 +110,7 @@ export default function OrderStatusPage({ navigation, route }) {
     );
   return (
     <>
+    
     <Text className="mt-12 text-3xl self-center">
       Orders Placed
     </Text>

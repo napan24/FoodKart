@@ -44,6 +44,19 @@ app.post("/CanteenData", (req, res) => {
         return res.json({ data: value });
       });
   });
+  app.post("/getCanteenData", (req, res) => {
+    Canteen.find({}, function (err, value) {
+        if (err) return handleError(err);
+        return res.json({ data: value });
+      });
+  });
+  app.post("/searchOrders", (req, res) => {
+    const {email}=req.body;
+    Order.find({email:email}, function (err, value) {
+        if (err) return handleError(err);
+        return res.json({ data: value });
+      });
+  });
 app.post("/OpenCloseCanteen", (req, res) => {
   const { name, option } = req.body;
   console.log(name);

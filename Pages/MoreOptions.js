@@ -46,6 +46,7 @@ export default function MoreOptions({ navigation, route }) {
           }
         );
         const result = await check.json();
+        showDialog();
       };
       const OpenCanteen = async () => {
         var option="Open";
@@ -60,6 +61,7 @@ export default function MoreOptions({ navigation, route }) {
           }
         );
         const result = await check.json();
+        showDialog();
       };
     return (
       <Provider>  
@@ -68,7 +70,7 @@ export default function MoreOptions({ navigation, route }) {
           <Dialog visible={visible} onDismiss={hideDialog}>
             <Dialog.Title>Alert</Dialog.Title>
             <Dialog.Content>
-              <Text variant="bodyMedium">Ordered Successfully</Text>
+              <Text variant="bodyMedium">Canteen Closed</Text>
             </Dialog.Content>
             <Dialog.Actions>
               <Button onPress={hideDialog}>Done</Button>

@@ -1,37 +1,62 @@
 import { StatusBar } from "expo-status-bar";
-import React,{useState} from "react";
+import React,{useState,useEffect} from "react";
 import { StyleSheet, Text, View} from "react-native";
 import { Searchbar,ProgressBar, MD3Colors,Surface } from "react-native-paper";
 import { Avatar, Button, Card, Title, Paragraph } from "react-native-paper";
 import { SafeAreaView, FlatList } from "react-native";
 import { Chip } from "react-native-paper";
-const DATA = [
-  {
-    id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-    title: "Hexagon",
-    image: require("../Images/Hexagon.jpeg"),
-    progress:0.7,
-    rating:4.2
-  },
-  {
-    id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
-    title: "H3 Canteen",
-    image: require("../Images/H3.jpeg"),
-    progress:0.3,
-    rating:3.5
-  },
-  {
-    id: "58694a0f-3da1-471f-bd96-145571e29d72",
-    title: "Nescafe",
-    image: require("../Images/Nescafe.jpeg"),
-    progress:0.5,
-    rating:4.8
-  },
-];
 export default function Home({ navigation ,route}) {
   const [searchQuery, setSearchQuery] = React.useState("");
+  const [canteenData,setCanteenData]=React.useState();
   const onChangeSearch = (query) => setSearchQuery(query);
   const [profile,setProfile]=useState(route.params.data);
+  // const [peopleCount,setPeopleCount]=useState("10);
+  const DATA = [
+    {
+      id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
+      title: "Hexagon",
+      image: require("../Images/Hexagon.jpeg"),
+      progress:0.8,
+      rating:4.2
+    },
+    {
+      id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
+      title: "H3 Canteen",
+      image: require("../Images/H3.jpeg"),
+      progress:0.3,
+      rating:3.5
+    },
+    {
+      id: "58694a0f-3da1-471f-bd96-145571e29d72",
+      title: "Nescafe",
+      image: require("../Images/Nescafe.jpeg"),
+      progress:0.5,
+      rating:4.8
+    },
+  ];
+  const CanteenData = async () => {
+    const check = await fetch(
+      URL+"/getCanteenData",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({}),
+      }
+    );
+    const result = await check.json();
+    setCanteenData(result.data);
+  };
+  useEffect(() => {
+    CanteenData();
+  }, [profile]);
+  useEffect(() => {
+    console.log(canteenData);
+  }, [canteenData])
+  function OrderHistory(){
+    navigation.navigate("OrderHistory", { data: profile, URL: URL });
+  }
   const URL=route.params.URL;
   const renderItem = ({ item }) => (   
     <Surface>
@@ -57,18 +82,22 @@ export default function Home({ navigation ,route}) {
 
   return (
     <>
-    <Searchbar
-        placeholder="Search"
-        onChangeText={onChangeSearch}
-        value={searchQuery}
-        className="mt-12 w-11/12 ml-4 rounded-3xl bg-[#EBC500]"
-      />
+    <Text className="mt-12 text-2xl self-center">Canteens IIITDMJ</Text>
       <FlatList
         className="mt-3"
         data={DATA}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
       />
+      <Button
+          onPress={() => {
+            OrderHistory();
+          }}
+          className="mt-2 self-center text-2xl w-[90%] bg-[#EBC500] h-12 flex flex-row justify-center rounded-3xl items-center"
+          mode="contained"
+        >
+          <Text className="mt-11 text-xl text-white">Order History</Text>
+        </Button>
     </>
   );
 }

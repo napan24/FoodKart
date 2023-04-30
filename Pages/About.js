@@ -165,12 +165,9 @@ const AboutPage = ({ route, navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Searchbar
-        placeholder="Search"
-        onChangeText={onChangeSearch}
-        value={searchQuery}
-        className="my-4 w-11/12 ml-4 rounded-3xl bg-[#EBC500]"
-      />
+      <Text className="mt-4 self-center text-2xl mb-4">
+        Welcome To FoodKart
+      </Text>
       {itemList.length > 0 && (
         <View className="h-20 w-[100%] bg-[#EBC500] rounded-t-3xl absolute bottom-0 z-10 flex flex-row justify-between">
           <Image

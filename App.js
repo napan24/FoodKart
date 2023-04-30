@@ -13,6 +13,7 @@ import ConfirmedOrders from "./Pages/ConfirmedOrders";
 import MoreOptions from "./Pages/MoreOptions";
 import RawMaterial from "./Pages/RawMaterial";
 import ChangePassword from "./Pages/ChangePassword";
+import OrderHistory from "./Pages/OrderHistory";
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -34,6 +35,7 @@ export default function App() {
           <Stack.Screen name="RawMaterial" component={RawMaterial} />
           <Stack.Screen name="Checkout" component={Checkout} />
           <Stack.Screen name="ChangePassword" component={ChangePassword} />
+          <Stack.Screen name="OrderHistory" component={OrderHistory} />
         </Stack.Navigator>
       </NavigationContainer>
     </>

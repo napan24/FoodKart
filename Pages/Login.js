@@ -26,7 +26,7 @@ const Login = ({ route, navigation }) => {
     webClientId:
       "191505894999-ohc8drk334fg22uf4j1ai4dtdlvcb9uq.apps.googleusercontent.com",
   });
-  const URL="https://56c5-110-227-60-44.ngrok-free.app";
+  const URL="https://300d-110-227-49-63.ngrok-free.app";
   React.useEffect(() => {
     if (response?.type === "success") {
       const {

@@ -59,8 +59,6 @@ app.post("/CanteenData", (req, res) => {
   });
 app.post("/OpenCloseCanteen", (req, res) => {
   const { name, option } = req.body;
-  console.log(name);
-  console.log(option);
   Canteen.findOneAndUpdate(
     { name: name },
     { $set: { status: option } },
@@ -74,21 +72,32 @@ app.post("/OpenCloseCanteen", (req, res) => {
   );
   return res.json({ message: "Success" });
 });
+app.post("/orderCooked", (req, res) => {
+  const { id } = req.body;
+  Order.findOneAndUpdate(
+    { _id: id },
+    { $set: { orderStatus: "Get Your Order" } },
+    { new: true, upsert: true },
+    function (err) {
+      if (err) {
+        // err: any errors that occurred
+        console.log(err);
+      }
+    }
+  );
+  return res.json({ message: "Success" });
+});
 app.post("/check", (req, res) => {
-  console.log("check");
   const { email, name } = req.body;
   User.find({ email: email }, function (err, person) {
-    console.log(person);
     if (err) return handleError(err);
     if (!person || Object.keys(person).length === 0) {
-      console.log("okay");
       const acc = new User({
         name: name,
         email: email,
       });
       acc.save();
       User.find({ email: email }, function (err, value) {
-        console.log(value);
         if (err) return handleError(err);
         return res.json({ data: value });
       });
@@ -100,16 +109,13 @@ app.post("/check", (req, res) => {
 app.post("/canteenLogin", (req, res) => {
   const { email, password } = req.body;
   User.find({ email: email, password: password }, function (err, value) {
-    console.log(value);
     if (err) return handleError(err);
     return res.json({ data: value });
   });
 });
 app.post("/getorders", (req, res) => {
   const { name } = req.body;
-  console.log(name);
   Order.find({ canteen: name }, function (err, value) {
-    console.log(value);
     if (err) return handleError(err);
     return res.json({ orders: value });
   });
@@ -130,7 +136,6 @@ app.post("/orderStatus", (req, res) => {
   );
 });
 app.post("/signup", (req, res) => {
-  console.log("signup");
   const { email, name } = req.body;
   const data = new User({
     name: name,
@@ -141,7 +146,6 @@ app.post("/signup", (req, res) => {
 });
 app.post("/changePassword", (req, res) => {
   const { name, newPassword } = req.body;
-  console.log(name, newPassword);
   User.findOneAndUpdate(
     { name: name },
     { $set: { password: newPassword } },

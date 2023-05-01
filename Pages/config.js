@@ -10,7 +10,7 @@ var firebaseConfig = {
     measurementId: "G-W00JTMKSTP",
     databaseURL: "https://smartcontaineredp-default-rtdb.asia-southeast1.firebasedatabase.app",
   };
-  const app = initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
 export { db };

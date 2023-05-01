@@ -5,11 +5,14 @@ import { Searchbar,ProgressBar, MD3Colors,Surface } from "react-native-paper";
 import { Avatar, Button, Card, Title, Paragraph } from "react-native-paper";
 import { SafeAreaView, FlatList } from "react-native";
 import { Chip } from "react-native-paper";
+import {db} from "./configPeople"
+import {ref,onValue} from "firebase/database"
 export default function Home({ navigation ,route}) {
   const [searchQuery, setSearchQuery] = React.useState("");
   const [canteenData,setCanteenData]=React.useState();
   const onChangeSearch = (query) => setSearchQuery(query);
   const [profile,setProfile]=useState(route.params.data);
+  const [people,setPeople]=useState(0);
   // const [peopleCount,setPeopleCount]=useState("10);
   const DATA = [
     {
@@ -34,6 +37,12 @@ export default function Home({ navigation ,route}) {
       rating:4.8
     },
   ];
+  useEffect(() => {
+    onValue(ref(db, '/'), querySnapShot => {
+      let data = querySnapShot.val() || {};
+      console.log(data);
+    });
+  }, []);
   const CanteenData = async () => {
     const check = await fetch(
       URL+"/getCanteenData",
@@ -59,7 +68,7 @@ export default function Home({ navigation ,route}) {
   }
   const URL=route.params.URL;
   const renderItem = ({ item }) => (   
-    <Surface>
+    canteenData&&canteenData.find(o => o.name === item.title).status=="Open"&&<Surface>
       <Card className="mt-3 mb-4 w-11/12 ml-4 " onPress={() => navigation.navigate("About", { title: item.title,rating: item.rating,headerImage:item.image,data:profile,URL:URL })}>
         <Card.Cover source={item.image} />
         <Card.Content className="mt-3 ">
@@ -83,12 +92,12 @@ export default function Home({ navigation ,route}) {
   return (
     <>
     <Text className="mt-12 text-2xl self-center">Canteens IIITDMJ</Text>
-      <FlatList
+      {canteenData&&<FlatList
         className="mt-3"
         data={DATA}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
-      />
+      />}
       <Button
           onPress={() => {
             OrderHistory();

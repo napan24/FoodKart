@@ -46,6 +46,17 @@ export default function ConfirmedOrders({ navigation, route }) {
     const result = await check.json();
     console.log(result);
   };
+  const cooked = async (item) => {
+    const id = item._id;
+    const check = await fetch(URL + "/orderCooked", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id}),
+    });
+    const result = await check.json();
+  };
   useEffect(() => {
     setName(route.params.data.data[0].name);
   }, []);
@@ -74,6 +85,26 @@ export default function ConfirmedOrders({ navigation, route }) {
             />
             <Text className="text-xl mt-2 text-white">Ordered By-{item.email.split('@')[0]}</Text>
             <Text className="text-xl mt-2 text-white">OTP-{item.OTP}</Text>
+            <View className="flex flex-row mb-2 justify-around">
+            <Button
+              onPress={() => {
+                completed(item)
+              }}
+              className="mt-4 self-center text-2xl w-[45%] bg-green-900 h-12 flex flex-row justify-center rounded-3xl"
+              mode="contained"
+            >
+              <Text className="mt-11 text-xl text-green-600">Completed</Text>
+            </Button>
+            <Button
+              onPress={() => {
+                cooked(item)
+              }}
+              className="mt-4 self-center text-2xl w-[45%] bg-green-900 h-12 flex flex-row justify-center rounded-3xl"
+              mode="contained"
+            >
+              <Text className="mt-11 text-xl text-green-600">Cooked</Text>
+            </Button>
+          </View>
           </Card.Content>
         </Card>
       </Surface>
